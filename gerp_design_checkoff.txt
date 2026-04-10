@@ -1,5 +1,5 @@
-Names:
-utlns:
+Names: Belema Roberts and Romil Shah
+utlns: brober06 and rshah15
 
 Answer the questions below, and submit your answers under the assignment
 "gerp Design Checkoff" on Gradescope. You must sign up for a design checkoff
@@ -12,13 +12,30 @@ For each question, give as much detail as you feel is necessary.
    provide a list of public functions of that class; for each struct, provide a
    list of member variables.
 
-Answer:
+Answer: We will be implementing a class for the index and structs for both the
+        key0value pair of the word and it's associated line numbers and 
+        one for storing the lines to avoid taking too much space.
+
+        The public functions for the class would include searching for a word
+        and adding a updating the key-value pair in the index.
+        For the key-value pair struct: It would have a public function 
+
+        The class would have variables:
+        hash table for storing, size of the table, and the number we need to
+        reach before increasing the size of the table.
+
+        The key-value pair struct would contain: the key and the list of the
+        associated lines.
+
+        While the struct for storing the lines would be a vector for storing
+        the lines
         
 2. Describe the index that you will build for querying. What specific data
    structures will you use to build this index? *Important*: Bring an
    accompanying drawing of your index structure when you come to your checkoff.
 
-Answer:
+Answer: We would be using hash tables for the index and will be querying with
+        hash functions
 
 3. To use your index, you will use something for lookup (the key) and you will
    get some associated data back (the value). What are the C++ *types* of your
@@ -30,24 +47,34 @@ Answer:
                 
 Answer:
 
-   Key type:
-   Value type:         
+   Key type: string
+   Value type: vector<string>        
 
 4. Explain what a collision is versus having multiple lines associated with 
    a particular word. Write (and/or draw) out an example of when a 
    collision occurs. Write (and/or draw) out an example of when multiple 
    lines associated with a single word. 
 
-Answer:
+Answer: collision is when multiple words can fit into the same position in 
+        the hash table. While the multiple lines for a word are not considered
+        collisions.
+        Example: if hash function is length of word, "back" and "fact" would
+        collide since the both have 4 letters
+        And if "back" is on line 2 and line 46 it has multiple lines associated with it
 
 5. What do you expect the *space* complexity of your index will be? How many
    times will a single line be stored according to your data structures?
 
-Answer:
+Answer: O(n) for storing each line in directory
+        O(w) for each word in the directory
+        O(w*n) I beleive for each time a word is in a line
+        So it should be O(w*n)
 
 6. What is the time complexity of *building* your index? If you refer to some
    variable, be sure to specify what the variable refers to, e.g., in "O(n)",
    state explicitly what "n" is.
+
+Answer: O(n) for checking for the word depending on the hash function
 
 Answer:
                 
@@ -56,15 +83,33 @@ Answer:
 
 Answer:
 
+Let k be the number of matching lines for a query, and let L be the total number of 
+characters we print for those matching lines. We plan to use a hash table based index, 
+so finding the query word in the index should be close to O(1) on average. After that, 
+the main work is just going through the matching line IDs and printing those lines. So 
+the total query time should be about O(1 + k + L).
+
 8. How will you handle case-sensitive search?
    What is the time complexity (should be close to O(1))?
 
 Answer:
 
+For case-sensitive search, we will maintain an index that stores each processed word exactly as it 
+appears after stripping leading and trailing non-alphanumeric characters. When the user enters a normal 
+query, we will strip leading and trailing non-alphanumeric characters from that query and then look it 
+up directly in the case-sensitive index. The lookup itself should be close to O(1) on average and then 
+printing the results takes time proportional to the number of matching lines. 
+
 9. How will you handle case-insensitive search?
    What is the time complexity (should be close to O(1))?
 
 Answer:
+
+For case-insensitive search we will build a second index. In that index, every processed word is converted 
+to lowercase before being stored. So we, We, and WE would all map to the same key. Then when the user uses 
+@i, we will strip the query, convert it to lowercase, and do a direct lookup in the case-insensitive index. 
+That lookup should also be close to O(1) on average, followed by the time needed to print the matching lines. 
+We are using two separate indexes because it keeps the search logic much simpler and faster.
 
 10. How are you handling duplicate words within a line? Consider these two example 
    lines: 
@@ -80,13 +125,58 @@ Answer:
 
 Answer:
 
+We only want each line to appear once in the output, even if the word shows up multiple times in that line. 
+To do this, when we process a line, we keep track of the words we’ve already seen using a temporary set. 
+For case-sensitive search, we store each cleaned word once per line, so duplicates like “the” don’t add the 
+same line multiple times. For case-insensitive search, we do the same thing but convert words to lowercase 
+first, so “the” and “THE” are treated as the same word and still only add the line once.
+
+
 11. How will you test your implementation and what specific evidence of testing
     will you submit?
 
 Answer:
 
+We will test in multiple stages.
+
+We will test stripNonAlphaNum with lots of edge cases:
+	•	punctuation only at the front
+	•	punctuation only at the back
+	•	punctuation on both sides
+	•	punctuation in the middle
+	•	strings with only non-alphanumeric characters
+	•	strings that are already valid words
+
+Second, we will test traverseDirectory on small directory structures and check that 
+it prints the full path of every file.
+
+For the full project, we will also test against the reference implementation by redirecting 
+input and output, sorting the output files when needed, and using diff to compare our results to the reference. 
+
+As evidence of testing, we would submit:
+	•	our unit tests
+	•	any custom command files we create
+	•	any testing input files we create
+
 12. What is your schedule for completing this assignment? Include specific dates
     and the tasks that you would like to accomplish by each date. Do not forget
     testing!
 
-Answer: 
+Answer:
+
+Early next week:
+	•	implement file traversal for indexing
+	•	store all file paths and lines
+	•	begin building the two indexes
+
+Middle of next week:
+	•	implement the command loop
+	•	implement normal queries, @i, @insensitive, @f, and @q
+	•	test formatting and command behavior carefully against the reference implementation
+
+Later next week / before final submission:
+	•	test on larger directories
+	•	check runtime and memory usage
+	•	clean up code and comments
+	•	write the README
+	•	do final diff testing and make sure the program builds cleanly from scratch
