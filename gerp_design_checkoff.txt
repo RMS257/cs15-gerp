@@ -29,11 +29,30 @@ Answer: We will be implementing a class for the index and structs for both the
 
         While the struct for storing the lines would be a vector for storing
         the lines
+Answer: We will be implementing a class for the index and structs for both the
+        key0value pair of the word and it's associated line numbers and 
+        one for storing the lines to avoid taking too much space.
+
+        The public functions for the class would include searching for a word
+        and adding a updating the key-value pair in the index.
+        For the key-value pair struct: It would have a public function 
+
+        The class would have variables:
+        hash table for storing, size of the table, and the number we need to
+        reach before increasing the size of the table.
+
+        The key-value pair struct would contain: the key and the list of the
+        associated lines.
+
+        While the struct for storing the lines would be a vector for storing
+        the lines
         
 2. Describe the index that you will build for querying. What specific data
    structures will you use to build this index? *Important*: Bring an
    accompanying drawing of your index structure when you come to your checkoff.
 
+Answer: We would be using hash tables for the index and will be querying with
+        hash functions
 Answer: We would be using hash tables for the index and will be querying with
         hash functions
 
@@ -49,6 +68,8 @@ Answer:
 
    Key type: string
    Value type: vector<string>        
+   Key type: string
+   Value type: vector<string>        
 
 4. Explain what a collision is versus having multiple lines associated with 
    a particular word. Write (and/or draw) out an example of when a 
@@ -61,10 +82,20 @@ Answer: collision is when multiple words can fit into the same position in
         Example: if hash function is length of word, "back" and "fact" would
         collide since the both have 4 letters
         And if "back" is on line 2 and line 46 it has multiple lines associated with it
+Answer: collision is when multiple words can fit into the same position in 
+        the hash table. While the multiple lines for a word are not considered
+        collisions.
+        Example: if hash function is length of word, "back" and "fact" would
+        collide since the both have 4 letters
+        And if "back" is on line 2 and line 46 it has multiple lines associated with it
 
 5. What do you expect the *space* complexity of your index will be? How many
    times will a single line be stored according to your data structures?
 
+Answer: O(n) for storing each line in directory
+        O(w) for each word in the directory
+        O(w*n) I beleive for each time a word is in a line
+        So it should be O(w*n)
 Answer: O(n) for storing each line in directory
         O(w) for each word in the directory
         O(w*n) I beleive for each time a word is in a line
