@@ -1,0 +1,78 @@
+/**********************************************************
+* Project 4: gerp (Phase 1)
+* CS 15
+* README
+* Author: BELEMA ROBERTS AND ROMIL SHAH
+*********************************************************/
+
+**Compile/run**:
+     - Compile using
+            make 
+
+
+**Program Purpose**:
+     The purpose of this program is to implement string processing and 
+     directory traversal utilities. The program reads a file directory using
+     an tree to locate all files recursively, and provides string formatting
+     to strip non-alphanumeric characters.
+
+
+**Acknowledgements**: 
+     None.
+
+
+**Files**: 
+
+__processing.cpp__:
+     Contains the implementation of the string parsing and directory traversing
+     functions. Features `stripNonAlphaNum` to remove trailing/leading 
+     non-alphanumeric characters, and `traverseDirectory` to print all file 
+     paths recursively.
+
+__processing.h__:
+     Contains the definition of the functions for the string parsing and 
+     directory traversing functions.
+
+__DirNode.h__:
+     Contains the interface for the DirNode class. Represents a folder/node in
+     the N-ary file system tree, containing information about subdirectories 
+     and files.
+
+__FSTree.h__:
+     Contains the interface for the FSTree class. It builds and represents the
+     entire file system tree.
+
+
+**Architectural Overview**:
+     The program relies heavily on an N-ary tree representation to navigate
+     the file system efficiently.
+     
+     - `processing.cpp` works as a client to the `FSTree` structure. It uses
+       `FSTree` to map out the entire folder specified by the user.
+     - Once the tree is built, `traverseDirectory` fetches the root `DirNode`
+       and triggers the recursive `traversal_helper`.
+     - `traversal_helper` visits each directory, explores its subdirectories
+       by calling itself, and then loops through to print all file paths.
+     - The `stripNonAlphaNum` function acts independently to sanitize words
+       by finding the first and last alphanumeric character indices and 
+       returning the cleaned substring.
+
+
+**Data Structures**:
+     
+     N-ary Tree (File System Tree):
+          Used to represent the nested directories of a file system. Unlike a
+          binary tree that only has two children, a DirNode in the FSTree can
+          have an arbitrary number of subdirectory children. This naturally 
+          mirrors a file system's folder hierarchy.
+
+
+**Testing**:
+
+     Testing was not required
+
+
+**Part that you found most difficult**:
+     Traversing the N-ary tree recursively
+
+**Time Spent**: 2 hours
