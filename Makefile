@@ -12,6 +12,24 @@
 ## At the end, you can delete this comment!
 ## 
 
+CXX      = clang++
+CXXFLAGS = -g3 -Wall -Wextra -Wpedantic -Wshadow -std=c++11
+LDFLAGS  = -g3 
+
+# Rules for compiling the individual object files
+processing.o: processing.cpp processing.h FSTree.h DirNode.h
+	$(CXX) $(CXXFLAGS) -c processing.cpp
+
+File_Storage.o: File_Storage.cpp File_Storage.h
+	$(CXX) $(CXXFLAGS) -c File_Storage.cpp
+
+index.o: index.cpp index.h File_Storage.h FSTree.h DirNode.h
+	$(CXX) $(CXXFLAGS) -c index.cpp
+
+unit_test: unit_test_driver.o processing.o File_Storage.o index.o FSTree.o DirNode.o
+	$(CXX) $(CXXFLAGS) $^
+
+
 ##
 ## Here is a special rule that removes all .o files besides the provided ones 
 ## (DirNode.o and FSTree.o), all temporary files (ending with ~), and 
@@ -27,4 +45,3 @@ clean:
 		-name '*.o' ! -name 'FSTree.o' ! -name 'DirNode.o' \
 		\) -exec rm -f {} \;
 	@rm -f *~ a.out
-
