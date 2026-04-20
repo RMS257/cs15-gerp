@@ -7,8 +7,7 @@
 #include <vector>
 class FileStorage
 {
-    // Struct
-private:
+public:
     struct LineData
     {
         int line_Num;
@@ -17,7 +16,6 @@ private:
         std::string line_txt;
     };
 
-public:
     FileStorage();
     ~FileStorage();
 

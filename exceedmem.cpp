@@ -36,41 +36,41 @@ using namespace std;
 
 void usage_abort(string prog_name)
 {
-        cerr << "Usage:  "
-             << prog_name
-             << " number_of_allocations allocation_size" << endl
-             << "     where allocation_size is in KB"
-             << endl;
-        exit(1);
+   cerr << "Usage:  "
+   << prog_name
+   << " number_of_allocations allocation_size" << endl
+   << "     where allocation_size is in KB"
+   << endl;
+   exit(1);
 }
 
 void get_args(int argc, char *argv[],
-              uint64_t &num_allocations,
-              uint64_t &allocation_size)
+   uint64_t &num_allocations,
+   uint64_t &allocation_size)
 {
-        if (argc != 3)
-                usage_abort(argv[0]);
-        num_allocations = stol(argv[1]);
-        allocation_size = stol(argv[2]) * 1024;
+   if (argc != 3)
+   usage_abort(argv[0]);
+   num_allocations = stol(argv[1]);
+   allocation_size = stol(argv[2]) * 1024;
 }
 
 int main(int argc, char *argv[])
 {
-        uint64_t  num_allocations, allocation_size;
-        char     *bytes_p;
+  uint64_t  num_allocations, allocation_size;
+  char     *bytes_p;
 
-        get_args(argc, argv, num_allocations, allocation_size);
+  get_args(argc, argv, num_allocations, allocation_size);
 
-	for (uint64_t i = 0; i < num_allocations; ++i)
-		bytes_p = new char[allocation_size];
+  for (uint64_t i = 0; i < num_allocations; ++i)
+	bytes_p = new char[allocation_size];
 
-	cout << "Allocation complete" << endl;
-	cout << "Modifying one byte of most recently allocated block" << endl;
-	cout << flush;
+  cout << "Allocation complete" << endl;
+  cout << "Modifying one byte of most recently allocated block" << endl;
+  cout << flush;
 
-        bytes_p[0] = 'x';
+  bytes_p[0] = 'x';
 
-        cout << "All done!" << endl;
+  cout << "All done!" << endl;
 
-        return 0;
+  return 0;
 }
