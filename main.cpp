@@ -1,19 +1,3 @@
-
-
-/*
-#include <iostream>
-#include <sstream>
-#include <fstream>
-
-#include "index.h"
-#include "File_Storage.h"
-#include "DirNode.h"
-#include "FSTree.h"
-#include "processing.h"
-
-*/
-
-
 /*
  * main.cpp
  * Romil Shah & Belema Roberts

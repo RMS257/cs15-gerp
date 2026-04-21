@@ -321,6 +321,9 @@ void runQueryLoop(index &sensitiveIndex, index &insensitiveIndex,
         for (int i = 0; i < (int)words.size(); i++) {
             handleQuery(words[i], false, sensitiveIndex,
                         insensitiveIndex, storage, outFile);
+            if (i != (int)words.size() - 1) {
+                cout << "Query? ";
+            }
         }
     }
 }

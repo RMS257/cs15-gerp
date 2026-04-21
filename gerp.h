@@ -1,3 +1,13 @@
+/*
+ * gerp.h
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Defines the main functions for the gerp program, including building the 
+ * indexes, running the query loop, and processing files.
+ */
+
 #ifndef GERP_H
 #define GERP_H
 

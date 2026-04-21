@@ -1,3 +1,14 @@
+/*
+ * File_storage.h
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Defines the FileStorage class, which stores file paths and lines of text
+ * for the gerp program. This class provides methods for adding lines and paths,
+ * and retrieving line and path information based on line ids and path ids.
+ */
+
 #ifndef __FILE_STORAGE_H
 #define __FILE_STORAGE_H
 

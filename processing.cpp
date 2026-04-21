@@ -3,6 +3,13 @@
 
 using namespace std;
 
+/*
+ * name: splitWords
+ * purpose: split a line into space-separated tokens
+ * arguments: line is the input string
+ * returns: vector of words
+ * effects: none
+ */
 string stripNonAlphaNum(string s)
 {
     int start = 0;

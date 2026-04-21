@@ -1,3 +1,14 @@
+/*
+ * index.h
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Defines the index class, which implements a hash table to store words and 
+ * their associated line ids for the gerp program. This class provides methods 
+ * for adding words and retrieving line ids based on query words.
+ */
+
 #ifndef __INDEX_H
 #define __INDEX_H
 

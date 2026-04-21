@@ -1,8 +1,24 @@
+/*
+ * index.cpp
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Implements the index class, which implements a hash table to store words and 
+ * their associated line ids for the gerp program. This class provides methods
+ * for adding words and retrieving line ids based on query words.
+ */
+
 #include "index.h"
 #include <iostream>
 
-
-
+/*
+ * name: index (Constructor)
+ * purpose: initialize the index with an initial table size and zero words
+ * arguments: none
+ * returns: none
+ * effects: initializes the hash table and variables
+ */
 index::index()
 {
     table_size = 100;
@@ -10,12 +26,26 @@ index::index()
     table.resize(table_size);
 }
 
-
+/*
+ * name: index (Destructor)
+ * purpose: none (nothing to free)
+ * arguments: none
+ * returns: none
+ * effects: none
+ */
 index::~index(){
     // Nothing to free
 }
 
-
+/*
+ * name: addWord
+ * purpose: adds or updates a word in the index with the given line id, 
+ *          and resizes the table if the load factor becomes too high
+ * arguments: the word to add and the line id where it appears
+ * returns: none
+ * effects: modifies the index by adding the word and line id, and resizes if
+ *          needed
+ */
 void index::addWord(const std::string &word, int line_id)
 {
     size_t hashval = get_hashval(word);
@@ -40,7 +70,14 @@ void index::addWord(const std::string &word, int line_id)
     }
 }
 
-
+/*
+ * name: getLines
+ * purpose: retrieves the line ids asociated with the word, or empty vector if 
+ *          the word isn't present
+ * arguments: word to look up
+ * returns: vector of line ids where the word appears
+ * effects: none
+ */
 const std::vector<int> &index::getLines(const std::string &word) const
 {
     size_t hashval = get_hashval(word);
@@ -56,7 +93,14 @@ const std::vector<int> &index::getLines(const std::string &word) const
     return empty;
 }
 
-
+/*
+ * name: resize
+ * purpose: doubles the table size and rehashes all present words
+ * arguments: none
+ * returns: none
+ * effects: modifies the index by resizing the hash table and rehashing all 
+ *          words
+ */
 void index::resize()
 {
     table_size *= 2;
@@ -72,6 +116,13 @@ void index::resize()
     table = std::move(new_table);
 }
 
+/*
+ * name: get_hashval
+ * purpose: gets the hash value for a word with respect to the table size
+ * arguments: word to hash
+ * returns: hash value for the word
+ * effects: none
+ */
 size_t index::get_hashval(const std::string &word) const
 {
     std::hash<std::string> hasher;

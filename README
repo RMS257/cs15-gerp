@@ -42,6 +42,24 @@ __FSTree.h__:
      Contains the interface for the FSTree class. It builds and represents the
      entire file system tree.
 
+__File_Storage.h__:
+     Contains the interface for the File_Storage class
+
+__File_Storage.cpp__:
+     Contains the implementation of the File_Storage class.
+
+__index.h__:
+     Contains the interface for the index class.
+
+__index.cpp__:
+     Contains the implementation of the index class.
+
+__gerp.h__:
+     Contains the interface for the 
+
+__gerp.cpp__:
+     Contains the implementation of th
+
 
 **Architectural Overview**:
      The program relies heavily on an N-ary tree representation to navigate
