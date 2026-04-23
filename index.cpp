@@ -103,9 +103,11 @@ const std::vector<int> &index::getLines(const std::string &word) const
  */
 void index::resize()
 {
+    // Double the table size
     table_size *= 2;
     std::vector<std::vector<WordNode>> new_table(table_size);
 
+    // Rehash all the existing words into the new table
     for (const std::vector<WordNode> &chain : table) {
         for (const WordNode &node : chain) {
             size_t hashval = get_hashval(node.word);

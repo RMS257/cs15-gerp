@@ -47,7 +47,13 @@ int main(int argc, char *argv[])
     index sensitiveIndex;
     index insensitiveIndex;
 
-    buildIndexes(inputDirectory, storage, sensitiveIndex, insensitiveIndex);
+    try {
+        buildIndexes(inputDirectory, storage, sensitiveIndex, insensitiveIndex);
+    } catch (const runtime_error &e) {
+        cerr << "Could not build index, reason:\n" << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+
     runQueryLoop(sensitiveIndex, insensitiveIndex, storage, outFile);
 
     outFile.close();

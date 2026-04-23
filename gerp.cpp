@@ -271,57 +271,39 @@ void runQueryLoop(index &sensitiveIndex, index &insensitiveIndex,
                   FileStorage &storage, ofstream &outFile)
 {
     string inputLine;
+    char curr_act = 'n'; // 'n' = normal, 'f' = file, 'i' = insensitive
 
+    cout << "Query? "; // initial prompt before any input is processed
     while (true) {
-        // Prompt always goes to cout, not the output file.
-        cout << "Query? ";
-
         if (not getline(cin, inputLine)) {
             cout << "Goodbye! Thank you and have a nice day." << endl;
             return;
         }
 
-        if (inputLine == "@q" or inputLine == "@quit") {
-            cout << "Goodbye! Thank you and have a nice day." << endl;
-            return;
-        }
-
-        if (inputLine.substr(0, 3) == "@f ") {
-            string newFile = inputLine.substr(3);
-            outFile.close();
-            outFile.open(newFile);
-            continue;
-        }
-
-        if (inputLine.substr(0, 3) == "@i ") {
-            vector<string> words = splitWords(inputLine);
-
-            for (int i = 1; i < (int)words.size(); i++) {
-                handleQuery(words[i], true, sensitiveIndex,
-                            insensitiveIndex, storage, outFile);
-            }
-
-            continue;
-        }
-
-        if (inputLine.substr(0, 13) == "@insensitive ") {
-            vector<string> words = splitWords(inputLine);
-
-            for (int i = 1; i < (int)words.size(); i++) {
-                handleQuery(words[i], true, sensitiveIndex,
-                            insensitiveIndex, storage, outFile);
-            }
-
-            continue;
-        }
-
-        // A normal multi-word line is treated as several separate queries.
         vector<string> words = splitWords(inputLine);
-
         for (int i = 0; i < (int)words.size(); i++) {
-            handleQuery(words[i], false, sensitiveIndex,
-                        insensitiveIndex, storage, outFile);
-            if (i != (int)words.size() - 1) {
+            if (curr_act == 'f') {
+                // Process argument for @f
+                outFile.close();
+                outFile.open(words[i]);
+                curr_act = 'n';
+                cout << "Query? ";
+            } else if (curr_act == 'i') {
+                // Process argument for @i or @insensitive
+                handleQuery(words[i], true, sensitiveIndex,
+                            insensitiveIndex, storage, outFile);
+                curr_act = 'n';
+                cout << "Query? ";
+            } else if (words[i] == "@f") { 
+                curr_act = 'f'; // Expect an output file next
+            } else if (words[i] == "@i" or words[i] == "@insensitive") {
+                curr_act = 'i'; // Expect a case-insensitive query next
+            } else if (words[i] == "@q" or words[i] == "@quit") {
+                cout << "Goodbye! Thank you and have a nice day." << endl;
+                return;
+            } else { //Case-sensitive query
+                handleQuery(words[i], false, sensitiveIndex,
+                            insensitiveIndex, storage, outFile);
                 cout << "Query? ";
             }
         }
