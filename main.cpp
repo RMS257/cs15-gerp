@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     ofstream outFile(outputFile);
     if (not outFile.is_open()) {
-        cerr << "Unable to open output file " << outputFile << endl;
+        cerr << "Could not open output file " <<  endl;
         return EXIT_FAILURE;
     }
 
