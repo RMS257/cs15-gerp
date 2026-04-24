@@ -1,96 +1,205 @@
-/**********************************************************
-* Project 4: gerp (Phase 1)
-* CS 15
+/***************************************************************************
+* CS 15 Project 4: gerp
 * README
-* Author: BELEMA ROBERTS AND ROMIL SHAH
-*********************************************************/
+* Authors: Romil Shah and Belema Roberts
+***************************************************************************/
 
-**Compile/run**:
-     - Compile using
-            make 
+A. Title and Authors
+
+CS 15 Project 4: gerp  
+Romil Shah  
+Belema Roberts
+
+B. Purpose of the Program
+
+The purpose of this program is to search through a directory of text files
+efficiently. The program reads every file in the input directory tree, stores
+the file paths and lines, and builds indexes so that later queries can be
+answered quickly. It supports both case-sensitive and case-insensitive
+searches, lets the user switch output files during execution, and prints the
+matching file path, line number, and line text for each result.
+
+C. Acknowledgements
+
+We used the course specification, the provided starter files, and the
+reference executable `the_gerp` as our main resources for this project. We
+also used class material and the provided examples to help guide our
+implementation and testing.
+
+D. Files Provided and Their Purpose
+
+main.cpp  
+Contains the driver for the program. It checks command-line arguments, opens
+the initial output file, creates the main data structures, builds the indexes,
+and starts the query loop.
+
+gerp.cpp  
+Contains the main program logic. This file builds the indexes, processes
+files, handles queries, and prints results.
+
+gerp.h  
+Header file for the helper functions implemented in gerp.cpp.
+
+index.cpp  
+Implements the `index` class. This class uses a hash table with separate
+chaining to map words to the line IDs where they appear.
+
+index.h  
+Header file for the `index` class.
+
+File_Storage.cpp  
+Implements the `FileStorage` class, which stores file paths and line data.
+This allows the program to store each line once and later recover the file
+path, line number, and line text from a line ID.
+
+File_Storage.h  
+Header file for the `FileStorage` class.
+
+processing.cpp  
+Implements the Phase 1 helper functions, including directory traversal and
+stripping non-alphanumeric characters from the front and back of tokens.
+
+processing.h  
+Header file for the processing helper functions.
+
+Makefile  
+Builds the gerp executable and includes the clean rule.
+
+README  
+This file.
+
+E. How to Compile and Run the Program
+
+To compile the program:
+    make
+
+To run the program:
+    ./gerp inputDirectory outputFile
+
+Example:
+    ./gerp /comp/15/files/proj-gerp-test-dirs/tinyData out.txt
+
+After the program starts, it will repeatedly print:
+    Query?
+
+The user may then enter:
+- a normal word for case-sensitive search
+- `@i word` for case-insensitive search
+- `@insensitive word` for case-insensitive search
+- `@f newOutputFile` to switch the output file
+- `@q` or `@quit` to exit the program
 
 
-**Program Purpose**:
-     The purpose of this program is to implement string processing and 
-     directory traversal utilities. The program reads a file directory using
-     an tree to locate all files recursively, and provides string formatting
-     to strip non-alphanumeric characters.
+F. Architectural Overview
+
+The program is organized into a few main parts.
+
+`main.cpp` is the driver. It checks for correct command-line arguments, opens
+the initial output file, creates the main data structures, calls the index
+building code, and then starts the query loop.
+
+`gerp.cpp` contains most of the main logic of the program. It is responsible
+for reading files, storing line information, building both the
+case-sensitive and case-insensitive indexes, and processing user queries.
+
+The `FileStorage` class stores the file paths and all line data. Each line is
+stored once along with its line number and the index of the file path it came
+from. This makes the program more space efficient because the full text of a
+line does not need to be stored repeatedly inside the index.
+
+The `index` class is used for fast lookup of words. It stores a word and the
+line IDs where that word appears. We create two separate `index` objects:
+one for case-sensitive search and one for case-insensitive search.
+
+The `processing` module contains the helper functions from Phase 1, including
+the function for stripping non-alphanumeric characters from the front and back
+of tokens.
+
+The overall flow of the program is:
+1. Traverse the input directory tree.
+2. Read every file and every line.
+3. Store file paths and line data in `FileStorage`.
+4. Insert words into the sensitive and insensitive indexes.
+5. Enter the query loop and answer searches using the indexes.
 
 
-**Acknowledgements**: 
-     None.
+G. Data Structures and Algorithms Used
+
+The main data structures we used were vectors, sets, and a hash table
+implemented using a vector of vectors.
+
+In the `index` class, the hash table is implemented as a
+`vector<vector<WordNode>>`. Each `WordNode` stores a word and a `vector<int>`
+of line IDs where that word appears. We used separate chaining to handle
+collisions, and the table resizes when the number of stored words gets too
+large relative to the table size.
+
+We used two index objects:
+- one sensitive index
+- one insensitive index
+
+The sensitive index stores cleaned words exactly as they appear. The
+insensitive index stores lowercase versions of cleaned words. This makes both
+search types efficient because the program does not need to scan every stored
+word when handling an insensitive query.
+
+In `FileStorage`, file paths are stored in a `vector<string>`, and lines are
+stored in a `vector<LineData>`. Each `LineData` stores:
+- the line number
+- the index of the file path
+- the full line text
+
+This design lets us store each line once and refer back to it using a line ID.
+
+While building the index for a line, we use sets to avoid adding the same line
+multiple times for the same word. One set is used for case-sensitive words and
+one set is used for lowercase words. This prevents duplicate output lines when
+a word appears multiple times on the same line.
+
+The main algorithm is:
+1. Recursively traverse the directory tree.
+2. For each file, read line by line.
+3. Split each line into tokens.
+4. Strip non-alphanumeric characters from the front and back of each token.
+5. Insert each unique word from that line into the correct indexes.
+6. During queries, look up the word in the correct index and print the
+   matching lines using the stored line IDs.
+
+H. Testing
+
+We tested the program in multiple stages.
+
+For Phase 1, we tested the helper functions separately, especially
+`stripNonAlphaNum`, with edge cases such as:
+- punctuation only at the front
+- punctuation only at the back
+- punctuation on both sides
+- punctuation in the middle
+- strings that become empty after stripping
+
+We also tested directory traversal on smaller directory structures.
+
+For the full program, we tested by running our implementation against the
+provided reference executable `the_gerp`. We tested:
+- normal case-sensitive queries
+- case-insensitive queries using `@i`
+- queries that do not exist
+- switching output files using `@f`
+- quitting with `@q`
+- tricky punctuation queries
+
+For many tests, we compared our output files with the reference using `diff`.
+When output order could vary, we sorted both output files before comparing
+them. We also compared the standard output behavior when needed.
+
+One issue we found during testing was how the program should behave when an
+insensitive query becomes an empty string after stripping punctuation. Testing
+against the reference helped us fix that case so that our output matched the
+expected behavior.
 
 
-**Files**: 
+I. Time Spent
 
-__processing.cpp__:
-     Contains the implementation of the string parsing and directory traversing
-     functions. Features `stripNonAlphaNum` to remove trailing/leading 
-     non-alphanumeric characters, and `traverseDirectory` to print all file 
-     paths recursively.
-
-__processing.h__:
-     Contains the definition of the functions for the string parsing and 
-     directory traversing functions.
-
-__DirNode.h__:
-     Contains the interface for the DirNode class. Represents a folder/node in
-     the N-ary file system tree, containing information about subdirectories 
-     and files.
-
-__FSTree.h__:
-     Contains the interface for the FSTree class. It builds and represents the
-     entire file system tree.
-
-__File_Storage.h__:
-     Contains the interface for the File_Storage class
-
-__File_Storage.cpp__:
-     Contains the implementation of the File_Storage class.
-
-__index.h__:
-     Contains the interface for the index class.
-
-__index.cpp__:
-     Contains the implementation of the index class.
-
-__gerp.h__:
-     Contains the interface for the 
-
-__gerp.cpp__:
-     Contains the implementation of th
-
-
-**Architectural Overview**:
-     The program relies heavily on an N-ary tree representation to navigate
-     the file system efficiently.
-     
-     - `processing.cpp` works as a client to the `FSTree` structure. It uses
-       `FSTree` to map out the entire folder specified by the user.
-     - Once the tree is built, `traverseDirectory` fetches the root `DirNode`
-       and triggers the recursive `traversal_helper`.
-     - `traversal_helper` visits each directory, explores its subdirectories
-       by calling itself, and then loops through to print all file paths.
-     - The `stripNonAlphaNum` function acts independently to sanitize words
-       by finding the first and last alphanumeric character indices and 
-       returning the cleaned substring.
-
-
-**Data Structures**:
-     
-     N-ary Tree (File System Tree):
-          Used to represent the nested directories of a file system. Unlike a
-          binary tree that only has two children, a DirNode in the FSTree can
-          have an arbitrary number of subdirectory children. This naturally 
-          mirrors a file system's folder hierarchy.
-
-
-**Testing**:
-
-     Testing was not required
-
-
-**Part that you found most difficult**:
-     Traversing the N-ary tree recursively
-
-**Time Spent**: 2 hours
+We each spent approximately 5 hours on this project, so total time spent 
+is 10 hours. This includes Phase 1, the design checkoff, implementation, 
+debugging, testing against the reference, and final cleanup.
