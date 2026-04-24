@@ -1,14 +1,19 @@
+/*
+ * processing.h
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Defines the processing functions for the gerp program, including stripping
+ * non-alphanumeric characters from words.
+ */
+
 #ifndef __PROCESSING_H
 #define __PROCESSING_H
-
-/*
-*   TODO: Update file header if you use this file in your solution to phase 2 
-*/
 
 #include <string>
 using namespace std;
 
 string stripNonAlphaNum(string input);
-void traverseDirectory(string directory);
 
 #endif 

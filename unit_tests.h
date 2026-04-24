@@ -47,4 +47,51 @@ void test_index_add_get() {
     assert(my_index.getLines("hello")[0] == 5);
 }
 
+void test_index_not_found() {
+    index my_index;
+    my_index.addWord("hello", 5);
+    
+    // Querying a word not in the index should yield an empty vector
+    assert(my_index.getLines("world").empty() == true);
+}
+
+void test_index_multiple_lines() {
+    index my_index;
+    my_index.addWord("test", 1);
+    my_index.addWord("test", 5);
+    my_index.addWord("test", 10);
+    
+    const std::vector<int> &lines = my_index.getLines("test");
+    assert(lines.size() == 3);
+    assert(lines[0] == 1);
+    assert(lines[1] == 5);
+    assert(lines[2] == 10);
+}
+
+void test_index_resize() {
+    index my_index;
+    // Default table size is 100, resizes at load factor 0.75.
+    // Adding 150 unique words forces at least one resize.
+    for (int i = 0; i < 150; i++) {
+        my_index.addWord("word" + std::to_string(i), i);
+    }
+    
+    // Verify that data from before and after the resize is intact
+    assert(my_index.getLines("word0")[0] == 0);
+    assert(my_index.getLines("word149")[0] == 149);
+}
+
+void test_file_storage_multiple() {
+    FileStorage storage;
+    storage.addPath("dir/file1.txt");
+    storage.addPath("dir/file2.txt");
+    
+    storage.addLine("Line 1 from file 1", 0, 1);
+    storage.addLine("Line 1 from file 2", 1, 1);
+    
+    assert(storage.getPath(1) == "dir/file2.txt");
+    assert(storage.getLine_info(1).line_txt == "Line 1 from file 2");
+    assert(storage.getLine_info(1).path_idx == 1);
+}
+
 #endif

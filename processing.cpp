@@ -1,3 +1,13 @@
+/*
+ * processing.cpp
+ * Romil Shah & Belema Roberts
+ * CS 15 Project 4 - gerp
+ *
+ * Purpose:
+ * Implements the processing functions for the gerp program, including stripping
+ * non-alphanumeric characters from words.
+ */
+
 #include <cctype>
 #include <string>
 
